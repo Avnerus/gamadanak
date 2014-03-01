@@ -23,13 +23,18 @@ start();
 
 function start() {
     console.log("Starting Gamad Anak!");
+
+    var playerContoller = require('./player_controller')(emitter);
+
     var beatSlider = require('./beat_slider')(stage, emitter, gameOpts);
     beatSlider.place();
+    var gnome = require('./gnome')(stage, emitter, gameOpts);
+    gnome.place();
     function animate() {
         // keyboard handler
         // kd.tick();
         requestAnimationFrame(animate);
-//        TWEEN.update();
+        TWEEN.update();
         
         renderer.render(stage);
     }

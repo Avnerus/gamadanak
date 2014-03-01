@@ -17,3 +17,11 @@ body {
     font-size: 48px;
     margin-top: 50px;
 }
+
+
+#now_playing {
+    width: 295px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 100px;
+}
