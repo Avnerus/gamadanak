@@ -18,6 +18,7 @@ function BeatSlider(stage, emitter, opts) {
 
     console.log("Loading beat slider"); 
     this.sliderBg = new PIXI.Sprite.fromImage('assets/slider_background.png');
+    this.haman = new PIXI.Sprite.fromImage('assets/haman.png');
 }
 
 BeatSlider.prototype.place = function(position) {
@@ -26,6 +27,13 @@ BeatSlider.prototype.place = function(position) {
     this.sliderBg.position.x = this.opts.stageWidth / 2;
     this.sliderBg.position.y = 100; 
 
-    console.log("Placing beat slider at", this.sliderBg.position);
+    this.haman.anchor.x = 0.5;
+    this.haman.anchor.y = 0.5;
+    this.haman.position.x = this.sliderBg.texture.frame.width / 2;
+    this.haman.position.y = this.sliderBg.texture.frame.height / 2;
+
+    console.log("Placing beat slider at", this.sliderBg.texture);
+    this.sliderBg.addChild(this.haman);
     this.stage.addChild(this.sliderBg);
+
 }

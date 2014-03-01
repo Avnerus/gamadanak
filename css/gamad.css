@@ -1,0 +1,19 @@
+body {
+    background-color: #101010;
+}
+
+
+#mixtape {
+    color: white;
+    position: absolute;
+    left: 1024px;
+    top: 0px;
+    width: 820px;
+    heighty: 768;
+}
+
+#heading {
+    text-align: center;
+    font-size: 48px;
+    margin-top: 50px;
+}
