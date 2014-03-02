@@ -26,7 +26,7 @@ function PlayerController(emitter) {
 
 PlayerController.prototype.onPlay = function() {
     console.log("Playing!!!");
-    this.emitter.emit('nowPlaying',{bpm: 118.34} );
+    this.emitter.emit('nowPlaying',{bpm: 118.15} );
     
 
 }
