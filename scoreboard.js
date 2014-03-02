@@ -20,6 +20,31 @@ function ScoreBoard(stage, emitter, opts) {
     // this.emitter = emitter;
 
     console.log("Loading score board"); 
+
+    var board = this;
+    emitter.on('anakGood', function(message){
+        board.anakGood();
+    });
+    emitter.on('anakBad', function(message){
+        board.anakBad();
+    });
+}
+
+
+ScoreBoard.prototype.anakGood = function(position) {
+    this.combo++;
+    this.points++;
+    this.updateBoard();
+}
+
+ScoreBoard.prototype.anakBad = function(position) {
+    this.combo = 0;
+    this.updateBoard();
+}
+
+ScoreBoard.prototype.updateBoard = function(position) {
+    this.pointsValue.setText(this.points);
+    this.comboValue.setText(this.combo);
 }
 
 ScoreBoard.prototype.place = function(position) {

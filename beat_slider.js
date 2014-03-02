@@ -16,6 +16,7 @@ function BeatSlider(stage, emitter, opts) {
     // so that they are available to the .prototype methods
     this.stage = stage
     this.opts = opts || {}
+    this.emitter = emitter;
     // this.emitter = emitter;
 
     console.log("Loading beat slider"); 
@@ -26,7 +27,7 @@ function BeatSlider(stage, emitter, opts) {
     // Handle spacebar
     window.onkeydown = function(e) { 
         if (e.keyCode == 32) {
-            this.spacePressed();
+            slider.spacePressed();
             return false;
         } 
     };
@@ -42,6 +43,19 @@ BeatSlider.prototype.tuneBPM = function(bpm) {
     console.log(this.sliderBg.width);
     this.haman.position.x = - (this.sliderBg.width / 2) + (this.haman.width / 2);
     this.run()
+}
+
+BeatSlider.prototype.spacePressed = function(bpm) {
+    var place = this.haman.position.x;
+    if (
+        (place <= 15 && place >= -15) ||
+        (place >= 165) ||
+        (place <= -165)
+    ) {
+        this.emitter.emit('anakGood',{} );
+    } else {
+        this.emitter.emit('anakBad',{} );
+    }
 }
 
 BeatSlider.prototype.run = function(bpm) {
