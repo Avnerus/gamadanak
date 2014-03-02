@@ -25,6 +25,8 @@ function start() {
     console.log("Starting Gamad Anak!");
 
     var playerContoller = require('./player_controller')(emitter);
+    var scoreBoard = require('./scoreboard')(stage, emitter, gameOpts);
+    scoreBoard.place();
 
     var beatSlider = require('./beat_slider')(stage, emitter, gameOpts);
     beatSlider.place();
