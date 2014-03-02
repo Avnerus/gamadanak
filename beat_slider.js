@@ -22,6 +22,15 @@ function BeatSlider(stage, emitter, opts) {
     this.sliderBg = new PIXI.Sprite.fromImage('assets/slider_background.png');
     this.haman = new PIXI.Sprite.fromImage('assets/haman.png');
     var slider = this;
+
+    // Handle spacebar
+    window.onkeydown = function(e) { 
+        if (e.keyCode == 32) {
+            this.spacePressed();
+            return false;
+        } 
+    };
+
     emitter.on('nowPlaying', function(message){
         slider.tuneBPM(message.bpm);
     });
@@ -46,21 +55,10 @@ BeatSlider.prototype.run = function(bpm) {
     var forthTween = new TWEEN.Tween(this.haman.position) 
         .to(forthTarget , time) 
         .easing(TWEEN.Easing.Linear.None) 
-        .onUpdate(function(){ 
- 
-        }) 
-        .onComplete(function(){ 
- 
-        });
+
     var backTween = new TWEEN.Tween(this.haman.position) 
         .to(backTarget , time) 
         .easing(TWEEN.Easing.Linear.None) 
-        .onUpdate(function(){ 
- 
-        }) 
-        .onComplete(function(){ 
- 
-        });
 
     forthTween.chain(backTween);
     backTween.chain(forthTween);
