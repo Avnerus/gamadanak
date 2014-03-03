@@ -5,6 +5,7 @@ var PIXI = require('pixi');
 var TWEEN = require('tween');
 var EventEmitter = require('events').EventEmitter;
 var emitter = new EventEmitter;
+window.emitter = emitter;
 
 var gameOpts = {
     stageWidth: 1024,
