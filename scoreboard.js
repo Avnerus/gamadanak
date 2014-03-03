@@ -1,5 +1,6 @@
 "use strict"
 var PIXI = require('pixi');
+var TWEEN = require('tween');
 
 module.exports = function(stage, emitter, opts) {
   return new ScoreBoard(stage, emitter, opts)
@@ -38,13 +39,17 @@ ScoreBoard.prototype.anakGood = function(position) {
 }
 
 ScoreBoard.prototype.anakBad = function(position) {
-    this.combo = 0;
-    this.updateBoard();
+    if (this.combo != 0) {
+        this.combo = 0;
+        this.updateBoard();
+    }
 }
 
 ScoreBoard.prototype.updateBoard = function(position) {
     this.pointsValue.setText(this.points);
     this.comboValue.setText(this.combo);
+    this.forthTweenPoints.start();
+    this.forthTweenCombo.start();
 }
 
 ScoreBoard.prototype.place = function(position) {
@@ -53,7 +58,7 @@ ScoreBoard.prototype.place = function(position) {
     this.pointsLabel.position.x = 70;
     this.pointsValue = new PIXI.Text(this.points, {font:"48px Arial", fill:"white"});
     this.pointsValue.position.y = 250;
-    this.pointsValue.position.x = 143;
+    this.pointsValue.position.x = 142;
     this.stage.addChild(this.pointsLabel);
     this.stage.addChild(this.pointsValue);
 
@@ -62,8 +67,33 @@ ScoreBoard.prototype.place = function(position) {
     this.comboLabel.position.x = 750;
     this.comboValue = new PIXI.Text(this.combo, {font:"48px Arial", fill:"white"});
     this.comboValue.position.y = 250;
-    this.comboValue.position.x = 835;
+    this.comboValue.position.x = 832;
     this.stage.addChild(this.comboLabel);
     this.stage.addChild(this.comboValue);
+
+    // Bounce tweens
+
+    var forthTarget = {x: 1.5, y: 1.5};
+    var backTarget  = {x: 1, y: 1};
+    var board = this;
+    this.forthTweenPoints = new TWEEN.Tween(this.pointsValue.scale) 
+        .to(forthTarget , 60) 
+        .easing(TWEEN.Easing.Linear.None);
+
+    this.backTweenPoints = new TWEEN.Tween(this.pointsValue.scale) 
+        .to(backTarget , 60) 
+        .easing(TWEEN.Easing.Linear.None) 
+
+    this.forthTweenPoints.chain(this.backTweenPoints);
+
+    this.forthTweenCombo = new TWEEN.Tween(this.comboValue.scale) 
+        .to(forthTarget , 60) 
+        .easing(TWEEN.Easing.Linear.None);
+
+    this.backTweenCombo = new TWEEN.Tween(this.comboValue.scale) 
+        .to(backTarget , 60) 
+        .easing(TWEEN.Easing.Linear.None) 
+
+    this.forthTweenCombo.chain(this.backTweenCombo);
 
 }
