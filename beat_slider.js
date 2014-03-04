@@ -1,6 +1,6 @@
 "use strict"
 var PIXI = require('pixi');
-var TWEEN = require('tween');
+var TWEEN = require('tween.js');
 
 module.exports = function(stage, emitter, opts) {
   return new BeatSlider(stage, emitter, opts)
@@ -32,17 +32,26 @@ function BeatSlider(stage, emitter, opts) {
         } 
     };
 
-    emitter.on('nowPlaying', function(message){
-        slider.tuneBPM(message.bpm);
+    emitter.on('gameStart', function(message){
+        slider.start(message.bpm);
+    });
+    emitter.on('gameStop', function(message){
+        slider.stop();
     });
 }
 
-BeatSlider.prototype.tuneBPM = function(bpm) {
+BeatSlider.prototype.start = function(bpm) {
     console.log("Slider tuning to " + bpm + " BPM!");
     this.bpm = bpm;
     console.log(this.sliderBg.width);
     this.haman.position.x = - (this.sliderBg.width / 2) + (this.haman.width / 2);
     this.run()
+}
+BeatSlider.prototype.stop = function() {
+    console.log("Slider stopping");
+    this.haman.position.x = - (this.sliderBg.width / 2) + (this.haman.width / 2);
+    this.forthTween.stop();
+    this.forthTween = null;
 }
 
 BeatSlider.prototype.spacePressed = function(bpm) {
@@ -65,17 +74,13 @@ BeatSlider.prototype.run = function(bpm) {
     var forthTarget = {x: (this.sliderBg.width / 2) - (this.haman.width / 2), y: this.haman.position.y}
     var backTarget = {x: -(this.sliderBg.width / 2) + (this.haman.width / 2), y: this.haman.position.y}
     var slider = this;
-    var forthTween = new TWEEN.Tween(this.haman.position) 
+    this.forthTween = new TWEEN.Tween(this.haman.position) 
         .to(forthTarget , time) 
-        .easing(TWEEN.Easing.Linear.None) 
+        .easing(TWEEN.Easing.Linear.None)
+        .yoyo(true)
+        .repeat(Infinity);
 
-    var backTween = new TWEEN.Tween(this.haman.position) 
-        .to(backTarget , time) 
-        .easing(TWEEN.Easing.Linear.None) 
-
-    forthTween.chain(backTween);
-    backTween.chain(forthTween);
-    forthTween.start();
+    this.forthTween.start();
 }
 
 BeatSlider.prototype.place = function(position) {

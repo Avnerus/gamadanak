@@ -1,6 +1,6 @@
 "use strict"
 var PIXI = require('pixi');
-var TWEEN = require('tween');
+var TWEEN = require('tween.js');
 
 module.exports = function(stage, emitter, opts) {
   return new ScoreBoard(stage, emitter, opts)

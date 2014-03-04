@@ -2,7 +2,7 @@
 /* globals PIXI, kd, requestAnimFrame */
 "use strict";
 var PIXI = require('pixi');
-var TWEEN = require('tween');
+var TWEEN = require('tween.js');
 var EventEmitter = require('events').EventEmitter;
 var emitter = new EventEmitter;
 window.emitter = emitter;

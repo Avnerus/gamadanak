@@ -45,6 +45,9 @@ function PlayerController(emitter) {
     emitter.on('stopPressed', function(message){
         ctrl.onStopPressed();
     });
+    emitter.on('pausePressed', function(message){
+        ctrl.onPausePressed();
+    });
     emitter.on('ffwdPressed', function(message){
         ctrl.onFfwdPressed();
     });
@@ -63,7 +66,6 @@ PlayerController.prototype.onPlayPressed = function() {
         this.currentSong = this.mixtape[0];
         this.currentSong.sound.play();
         $("#song-label").text(this.currentSong.text);
-        this.emitter.emit('nowPlaying',{bpm: this.currentSong.bpm} );
     } else {
         this.currentSong.sound.play();
     }
@@ -74,34 +76,52 @@ PlayerController.prototype.onStopPressed = function() {
         this.currentSong.sound.pause();
     }
 }
+PlayerController.prototype.onPausePressed = function() {
+    console.log("Stop Pressed");
+    if (this.currentSong) {
+        this.currentSong.sound.togglePause();
+    }
+}
 PlayerController.prototype.onFfwdPressed = function() {
     console.log("FFwd Pressed");
-    if (this.currentSongIndex == -1 || this.currentSongIndex >= this.mixtape.length -1) {
+    if (this.currentSongIndex == -1 || this.currentSongIndex >= this.mixtape.length -1 || !this.currentSong) {
         return;
     }
+    this.currentSong.sound.stop();
     this.currentSongIndex++;
     this.currentSong = this.mixtape[this.currentSongIndex];
+    this.currentSong.sound.play({position: 0});
+    $("#song-label").text(this.currentSong.text);
 }
 PlayerController.prototype.onRewindPressed = function() {
     console.log("Rewind Pressed");
-    if (this.currentSongIndex == -1) {
+    if (this.currentSongIndex <= 0 || !this.currentSong) {
         return;
     }
+    this.currentSong.sound.stop();
+    this.currentSongIndex--;
+    this.currentSong = this.mixtape[this.currentSongIndex];
+    this.currentSong.sound.play({position: 0});
+    $("#song-label").text(this.currentSong.text);
 }
 PlayerController.prototype.onPlay = function() {
     console.log("Playing!");
     this.emitter.emit("tapeStart", {});
+    this.emitter.emit("gameStart", {bpm: this.currentSong.bpm});
 }
 PlayerController.prototype.onStop = function() {
     console.log("Stop!");
+    this.emitter.emit("gameStop", {});
 }
 PlayerController.prototype.onPause = function() {
     console.log("Pause!");
     this.emitter.emit("tapeStop", {});
+    this.emitter.emit("gameStop", {});
 }
 PlayerController.prototype.onResume = function() {
     console.log("Resume!")
     this.emitter.emit("tapeStart", {});
+    this.emitter.emit("gameStart", {bpm: this.currentSong.bpm});
 }
 PlayerController.prototype.onSoundInit = function() {
     var ctrl = this;
