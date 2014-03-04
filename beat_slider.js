@@ -23,6 +23,7 @@ function BeatSlider(stage, emitter, opts) {
     this.sliderBg = new PIXI.Sprite.fromImage('assets/slider_background.png');
     this.haman = new PIXI.Sprite.fromImage('assets/haman.png');
     var slider = this;
+    this.running = false;
 
     // Handle spacebar
     window.onkeydown = function(e) { 
@@ -55,6 +56,9 @@ BeatSlider.prototype.stop = function() {
 }
 
 BeatSlider.prototype.spacePressed = function(bpm) {
+    if (!this.running) {
+        return;
+    }
     var place = this.haman.position.x;
     if (
         (place <= 15 && place >= -15) ||
@@ -81,6 +85,7 @@ BeatSlider.prototype.run = function(bpm) {
         .repeat(Infinity);
 
     this.forthTween.start();
+    this.running = true;
 }
 
 BeatSlider.prototype.place = function(position) {

@@ -8,7 +8,7 @@ var emitter = new EventEmitter;
 window.emitter = emitter;
 
 var gameOpts = {
-    stageWidth: 1024,
+    stageWidth: 900,
     stageHeight: 768,
 }
 

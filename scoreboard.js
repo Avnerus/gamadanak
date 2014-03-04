@@ -64,10 +64,10 @@ ScoreBoard.prototype.place = function(position) {
 
     this.comboLabel = new PIXI.Text("Anak combo", {font:"36px Arial", fill:"white"});
     this.comboLabel.position.y = 200;
-    this.comboLabel.position.x = 750;
+    this.comboLabel.position.x = 650;
     this.comboValue = new PIXI.Text(this.combo, {font:"48px Arial", fill:"white"});
     this.comboValue.position.y = 250;
-    this.comboValue.position.x = 832;
+    this.comboValue.position.x = 732;
     this.stage.addChild(this.comboLabel);
     this.stage.addChild(this.comboValue);
 
