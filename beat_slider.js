@@ -64,7 +64,6 @@ BeatSlider.prototype.run = function(bpm) {
     var time = 2000 / (this.bpm / 60);
     var forthTarget = {x: (this.sliderBg.width / 2) - (this.haman.width / 2), y: this.haman.position.y}
     var backTarget = {x: -(this.sliderBg.width / 2) + (this.haman.width / 2), y: this.haman.position.y}
-    console.log(time);
     var slider = this;
     var forthTween = new TWEEN.Tween(this.haman.position) 
         .to(forthTarget , time) 
