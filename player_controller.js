@@ -70,7 +70,7 @@ PlayerController.prototype.onPlayPressed = function() {
     if (this.currentSongIndex == -1) {
         this.currentSongIndex = 0;
         this.currentSong = this.mixtape[0];
-        this.currentSong.sound.play({volume: 0});
+        this.currentSong.sound.play();
         $("#song-label").text(this.currentSong.text);
     } else {
         this.currentSong.sound.play();
