@@ -13,8 +13,9 @@ body {
 }
 
 #heading {
+    font: normal 72px JustAnotherHandRegular, helvetica, sans-serif;
     text-align: center;
-    font-size: 48px;
+    /*font-size: 48px;*/
     margin-top: 50px;
     margin-left: 15px;
 }
