@@ -1,21 +1,22 @@
 "use strict"
 var PIXI = require('pixi');
 
-module.exports = function(stage, emitter, opts) {
-  return new Gnome(stage, emitter, opts)
+module.exports = function(stage, emitter, scoreBoard, opts) {
+  return new Gnome(stage, emitter,scoreBoard, opts)
 }
 
 module.exports.Gnome = Gnome
 
 
-function Gnome(stage, emitter, opts) {
+function Gnome(stage, emitter, scoreBoard, opts) {
    // protect against people who forget 'new'
-   if (!(this instanceof Gnome)) return new Gnome(stage, emitter, opts)
+   if (!(this instanceof Gnome)) return new Gnome(stage, emitter, scoreBoard, opts)
     // we need to store the passed in variables on 'this'
     // so that they are available to the .prototype methods
     this.stage = stage
     this.opts = opts || {}
     this.emitter = emitter;
+    this.scoreBoard = scoreBoard;
 
     console.log("Loading gnome"); 
     this.sprite = new PIXI.Sprite.fromImage('assets/pixelgnome.png');
@@ -24,25 +25,11 @@ function Gnome(stage, emitter, opts) {
 
     // Loading dance clips
     this.dances  = [];
-    var dance_seq1 = [];
-    for (var i = 1; i <= 23; i++) {
-       var name = pad(i,4); 
-       var texture = new PIXI.Texture.fromFrame("gnome_dance" + name + ".png");
-       dance_seq1.push(texture);
-       var dance1 = new PIXI.MovieClip(dance_seq1);
-       dance1.anchor.x = 0.5;
-       dance1.anchor.y = 0.5;
-       dance1.position.x = this.opts.stageWidth / 2;
-       dance1.position.y = this.opts.stageHeight / 2 + 100; 
-       dance1.loop = false;
-       dance1.onComplete = function() {
-           gnome.danceComplete();
-       };
-       dance1.visible = false;
-    }
-    this.stage.addChild(dance1);
     
-    this.dances.push(dance1);
+    this.loadAnim("gnome_dance", 23);
+    this.loadAnim("gnome_dance2", 34);
+
+
     this.currentDance = null;
 
     emitter.on('anakGood', function(message){
@@ -51,6 +38,31 @@ function Gnome(stage, emitter, opts) {
     emitter.on('anakBad', function(message){
         gnome.anakBad();
     });
+}
+
+
+Gnome.prototype.loadAnim = function(name, frames) {
+    var dance_seq = [];
+    var gnome = this;
+    for (var i = 1; i <= frames; i++) {
+       var num = pad(i,4); 
+       var texture = new PIXI.Texture.fromFrame(name + num + ".png");
+       dance_seq.push(texture);
+    }
+    var dance = new PIXI.MovieClip(dance_seq);
+    dance.anchor.x = 0.5;
+    dance.anchor.y = 0.5;
+    dance.position.x = this.opts.stageWidth / 2;
+    dance.position.y = this.opts.stageHeight / 2 + 100; 
+    dance.loop = false;
+    dance.onComplete = function() {
+       gnome.danceComplete();
+    };
+    dance.visible = false;
+    this.stage.addChild(dance);
+    
+    this.dances.push(dance);
+    
 }
 
 Gnome.prototype.place = function(position) {
@@ -62,12 +74,19 @@ Gnome.prototype.place = function(position) {
 
 }
 Gnome.prototype.anakGood = function(position) {
-    console.log("PLAY DANCE!");
-    this.currentDance = this.dances[0];
+    if (this.currentDance != null) {
+        this.danceComplete();
+    }
+    if (this.scoreBoard.combo > 0 && (this.scoreBoard.combo % 3) == 0) {
+        console.log("PLAY SPECIAL DANCE!");
+        this.currentDance = this.dances[1];
+    } else {
+        console.log("PLAY DANCE!");
+        this.currentDance = this.dances[0];
+    }
     this.currentDance.gotoAndPlay(0);
     this.currentDance.visible = true;
     this.sprite.visible = false;
-
 }
 
 Gnome.prototype.anakBad = function(position) {

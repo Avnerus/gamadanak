@@ -16,7 +16,7 @@ var stage = new PIXI.Stage(0x000000);
 var renderer = new PIXI.autoDetectRenderer(gameOpts.stageWidth, gameOpts.stageHeight);
 document.body.appendChild(renderer.view);
 
-var loader = new PIXI.AssetLoader(["assets/dance_seq.json"]);
+var loader = new PIXI.AssetLoader(["assets/dance_seq.json","assets/dance_seq2.json"]);
 loader.onComplete = start;
 loader.load();
 
@@ -29,7 +29,7 @@ function start() {
 
     var beatSlider = require('./beat_slider')(stage, emitter, gameOpts);
     beatSlider.place();
-    var gnome = require('./gnome')(stage, emitter, gameOpts);
+    var gnome = require('./gnome')(stage, emitter, scoreBoard, gameOpts);
     gnome.place();
     function animate() {
         // keyboard handler
