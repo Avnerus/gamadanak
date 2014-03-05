@@ -36,7 +36,7 @@
         <key>dataFormat</key>
         <string>json</string>
         <key>textureFileName</key>
-        <filename>../assets/dance_seq2.png</filename>
+        <filename></filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -127,7 +127,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../assets/dance_seq2.json</filename>
+                <filename></filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -166,40 +166,24 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>dance_2_seq/gnome_dance20001.png</filename>
-            <filename>dance_2_seq/gnome_dance20002.png</filename>
-            <filename>dance_2_seq/gnome_dance20003.png</filename>
-            <filename>dance_2_seq/gnome_dance20004.png</filename>
-            <filename>dance_2_seq/gnome_dance20005.png</filename>
-            <filename>dance_2_seq/gnome_dance20006.png</filename>
-            <filename>dance_2_seq/gnome_dance20007.png</filename>
-            <filename>dance_2_seq/gnome_dance20008.png</filename>
-            <filename>dance_2_seq/gnome_dance20009.png</filename>
-            <filename>dance_2_seq/gnome_dance20010.png</filename>
-            <filename>dance_2_seq/gnome_dance20011.png</filename>
-            <filename>dance_2_seq/gnome_dance20012.png</filename>
-            <filename>dance_2_seq/gnome_dance20013.png</filename>
-            <filename>dance_2_seq/gnome_dance20014.png</filename>
-            <filename>dance_2_seq/gnome_dance20015.png</filename>
-            <filename>dance_2_seq/gnome_dance20016.png</filename>
-            <filename>dance_2_seq/gnome_dance20017.png</filename>
-            <filename>dance_2_seq/gnome_dance20018.png</filename>
-            <filename>dance_2_seq/gnome_dance20019.png</filename>
-            <filename>dance_2_seq/gnome_dance20020.png</filename>
-            <filename>dance_2_seq/gnome_dance20021.png</filename>
-            <filename>dance_2_seq/gnome_dance20022.png</filename>
-            <filename>dance_2_seq/gnome_dance20023.png</filename>
-            <filename>dance_2_seq/gnome_dance20024.png</filename>
-            <filename>dance_2_seq/gnome_dance20025.png</filename>
-            <filename>dance_2_seq/gnome_dance20026.png</filename>
-            <filename>dance_2_seq/gnome_dance20027.png</filename>
-            <filename>dance_2_seq/gnome_dance20028.png</filename>
-            <filename>dance_2_seq/gnome_dance20029.png</filename>
-            <filename>dance_2_seq/gnome_dance20030.png</filename>
-            <filename>dance_2_seq/gnome_dance20031.png</filename>
-            <filename>dance_2_seq/gnome_dance20032.png</filename>
-            <filename>dance_2_seq/gnome_dance20033.png</filename>
-            <filename>dance_2_seq/gnome_dance20034.png</filename>
+            <filename>angry_seq/gnome_angry0001.png</filename>
+            <filename>angry_seq/gnome_angry0002.png</filename>
+            <filename>angry_seq/gnome_angry0003.png</filename>
+            <filename>angry_seq/gnome_angry0004.png</filename>
+            <filename>angry_seq/gnome_angry0005.png</filename>
+            <filename>angry_seq/gnome_angry0006.png</filename>
+            <filename>angry_seq/gnome_angry0007.png</filename>
+            <filename>angry_seq/gnome_angry0008.png</filename>
+            <filename>angry_seq/gnome_angry0009.png</filename>
+            <filename>angry_seq/gnome_angry0010.png</filename>
+            <filename>angry_seq/gnome_angry0011.png</filename>
+            <filename>angry_seq/gnome_angry0012.png</filename>
+            <filename>angry_seq/gnome_angry0013.png</filename>
+            <filename>angry_seq/gnome_angry0014.png</filename>
+            <filename>angry_seq/gnome_angry0015.png</filename>
+            <filename>angry_seq/gnome_angry0016.png</filename>
+            <filename>angry_seq/gnome_angry0017.png</filename>
+            <filename>angry_seq/gnome_angry0018.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

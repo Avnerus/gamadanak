@@ -28,6 +28,7 @@ function Gnome(stage, emitter, scoreBoard, opts) {
     
     this.loadAnim("gnome_dance", 23);
     this.loadAnim("gnome_dance2", 34);
+    this.loadAnim("gnome_angry", 18);
 
 
     this.currentDance = null;
@@ -35,8 +36,8 @@ function Gnome(stage, emitter, scoreBoard, opts) {
     emitter.on('anakGood', function(message){
         gnome.anakGood();
     });
-    emitter.on('anakBad', function(message){
-        gnome.anakBad();
+    emitter.on('anakLostCombo', function(message){
+        gnome.anakLostCombo();
     });
 }
 
@@ -89,7 +90,14 @@ Gnome.prototype.anakGood = function(position) {
     this.sprite.visible = false;
 }
 
-Gnome.prototype.anakBad = function(position) {
+Gnome.prototype.anakLostCombo = function(position) {
+    if (this.currentDance != null) {
+        this.danceComplete();
+    }
+    this.currentDance = this.dances[2];
+    this.currentDance.gotoAndPlay(0);
+    this.currentDance.visible = true;
+    this.sprite.visible = false;
 }
 
 Gnome.prototype.danceComplete = function() {

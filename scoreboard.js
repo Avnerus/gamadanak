@@ -18,6 +18,7 @@ function ScoreBoard(stage, emitter, opts) {
     this.opts = opts || {}
     this.points = 0;
     this.combo = 0;
+    this.emitter = emitter;
     // this.emitter = emitter;
 
     console.log("Loading score board"); 
@@ -40,6 +41,7 @@ ScoreBoard.prototype.anakGood = function(position) {
 
 ScoreBoard.prototype.anakBad = function(position) {
     if (this.combo != 0) {
+        this.emitter.emit('anakLostCombo',{combo: this.combo} );
         this.combo = 0;
         this.updateBoard();
     }

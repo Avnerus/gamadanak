@@ -52,7 +52,7 @@ BeatSlider.prototype.stop = function() {
     console.log("Slider stopping");
     this.haman.position.x = - (this.sliderBg.width / 2) + (this.haman.width / 2);
     this.forthTween.stop();
-    this.forthTween = null;
+    //this.forthTween = null;
 }
 
 BeatSlider.prototype.spacePressed = function(bpm) {
@@ -84,6 +84,7 @@ BeatSlider.prototype.run = function(bpm) {
         .yoyo(true)
         .repeat(Infinity);
 
+    console.log("Beat Slider starting");
     this.forthTween.start();
     this.running = true;
 }
