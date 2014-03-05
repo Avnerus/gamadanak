@@ -32,7 +32,7 @@ function PlayerController(emitter) {
         },
         { 
             file: "zebra.ogg",
-            text: "beach house - zebra",
+            text: "Beachc House - Zebra",
             bpm: 118.379   
         }
     ];
