@@ -19,15 +19,21 @@ function PlayerController(emitter) {
 
     // The MIXTAPE
     this.mixtape = [
-        { 
+   /*     { 
             file: "deep_is_the_breath.ogg",
             text: "Kasper Bjorke - Deep is the Breath",
             bpm: 112.0
+        }, */
+       
+        { 
+            file: "lies.ogg",
+            text: "CHVRCHES - Lies",
+            bpm: 104.914  
         },
         { 
             file: "zebra.ogg",
-            text: "Beach House - Zebra",
-            bpm: 118.15
+            text: "beach house - zebra",
+            bpm: 118.379   
         }
     ];
 

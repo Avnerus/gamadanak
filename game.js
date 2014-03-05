@@ -16,11 +16,9 @@ var stage = new PIXI.Stage(0x000000);
 var renderer = new PIXI.autoDetectRenderer(gameOpts.stageWidth, gameOpts.stageHeight);
 document.body.appendChild(renderer.view);
 
-//var loader = new PIXI.AssetLoader([]);
-//loader.onComplete = start;
-//loader.load();
-
-start();
+var loader = new PIXI.AssetLoader(["assets/dance_seq.json"]);
+loader.onComplete = start;
+loader.load();
 
 function start() {
     console.log("Starting Gamad Anak!");
