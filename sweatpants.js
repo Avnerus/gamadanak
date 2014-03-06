@@ -1,5 +1,5 @@
 "use strict"
-var PIXI = require('pixi');
+//var PIXI = require('pixi');
 
 module.exports = function(stage, emitter, scoreBoard, world, opts) {
   return new SweatPants(stage, emitter,scoreBoard, world, opts)
@@ -7,7 +7,7 @@ module.exports = function(stage, emitter, scoreBoard, world, opts) {
 
 module.exports.SweatPants = SweatPants
 
-const METER = 100;
+var METER = 100;
 
 function SweatPants(stage, emitter, scoreBoard, world, opts) {
    // protect against people who forget 'new'
@@ -39,6 +39,13 @@ function SweatPants(stage, emitter, scoreBoard, world, opts) {
 
     this.polyFixture.shape = new Box2D.Collision.Shapes.b2PolygonShape();
     this.polyFixture.density = 1;
+
+
+    this.circleFixture	= new Box2D.Dynamics.b2FixtureDef();
+    this.circleFixture.shape	= new Box2D.Collision.Shapes.b2CircleShape();
+    this.circleFixture.density = 1;
+    this.circleFixture.restitution = 0.7;
+
     this.bodyDef = new Box2D.Dynamics.b2BodyDef();
     this.bodyDef.type = Box2D.Dynamics.b2Body.b2_staticBody;
 
@@ -58,30 +65,68 @@ function SweatPants(stage, emitter, scoreBoard, world, opts) {
     this.world.CreateBody(this.bodyDef).CreateFixture(this.polyFixture);
     this.bodyDef.type = Box2D.Dynamics.b2Body.b2_dynamicBody;
 
-    this.start();
+    this.allPants = [];
+    this.bodies = [];
+    this.pantsToRemove = [];
 }
 
 
-SweatPants.prototype.start = function(name, frames) {
-    this.pants = new PIXI.Sprite(PIXI.Texture.fromFrame("assets/sweatpants.png")); 
-    this.bodyDef.position.Set(MathUtil.rndRange(0, this.opts.stageWidth) / METER, -MathUtil.rndRange(50, 1000) / METER);
-    this.body = this.world.CreateBody(this.bodyDef);
-    this.polyFixture.shape.SetAsBox(102 / 2 / METER, 200 / 2 / METER);
-    this.body.CreateFixture(this.polyFixture);
-    this.pants.anchor.x = this.pants.anchor.y = 0.5;
-    this.pants.scale.x = 102 / 100;
-    this.pants.scale.y = 200 / 100;
-    this.stage.addChild(this.pants);
+SweatPants.prototype.start = function(numOfPants) {
+    for (var i = 0; i < numOfPants; i++) {
+        var pants = new PIXI.Sprite(PIXI.Texture.fromFrame("assets/sweatpants.png")); 
+        pants.index = i;
+        var colorFilter = new PIXI.ColorMatrixFilter();
+        colorFilter.matrix = [1,0,0,MathUtil.rndRange(0,1),MathUtil.rndRange(0,1),MathUtil.rndRange(0,1),MathUtil.rndRange(0,1),0,0,0,1,0,0,0,0,1];
+        pants.filters = [colorFilter];
+
+        this.allPants.push(pants);
+
+        this.bodyDef.position.Set(MathUtil.rndRange(0, this.opts.stageWidth) / METER, -MathUtil.rndRange(50, 2000) / METER);
+        var body = this.world.CreateBody(this.bodyDef);
+        this.circleFixture.shape.SetRadius(50 / METER);
+        body.CreateFixture(this.circleFixture);
+        this.bodies.push(body);
+        
+        pants.anchor.x = pants.anchor.y = 0.5;
+        this.stage.addChild(pants);
+    }
+    /*
+    this.polyFixture.shape.SetAsBox(51 / 2 / METER, 100 / 2 / METER);
+    this.body.CreateFixture(this.polyFixture);*/
 }
 
 SweatPants.prototype.update = function(position) {
-    var position = this.body.GetPosition();
-    this.pants.position.x = position.x * 100;
-    this.pants.position.y = position.y * 100;
-    this.pants.rotation = this.body.GetAngle();
+    for (var i = 0; i < this.allPants.length; i++) {
+        var body = this.bodies[i];
+        var pants = this.allPants[i];
+        var position = body.GetPosition();
+        pants.position.x = position.x * 100;
+        pants.position.y = position.y * 100;
+        pants.rotation = body.GetAngle();
+    }
 }
 SweatPants.prototype.anakGood = function(position) {
+    if (this.pantsToRemove.length > 0) {
+        for (var i = 0; i < this.pantsToRemove.length; i++) {
+            var thePants = this.pantsToRemove[i];
+            this.stage.removeChild(thePants);
+        }
+        this.pantsToRemove.splice(0, this.pantsToRemove.length);
+    }
+    if (this.scoreBoard.combo >= 0 && this.scoreBoard.combo % 10 == 0) {
+        this.start(10);
+    }
 }
 
 SweatPants.prototype.anakLostCombo = function(position) {
+    for (var i = 0; i < this.allPants.length; i++) {
+        var pants = this.allPants[i];
+        var body = this.bodies[i];
+        this.world.DestroyBody(body);
+        //this.stage.removeChild(pants);
+        pants.visible = false;
+        this.pantsToRemove.push(pants);
+    }
+    this.allPants.splice(0, this.allPants.length);
+    this.bodies.splice(0, this.bodies.length);
 }

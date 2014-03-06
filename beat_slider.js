@@ -1,5 +1,5 @@
 "use strict"
-var PIXI = require('pixi');
+// var PIXI = require('pixi');
 var TWEEN = require('tween.js');
 
 module.exports = function(stage, emitter, opts) {

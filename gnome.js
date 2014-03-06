@@ -1,5 +1,5 @@
 "use strict"
-var PIXI = require('pixi');
+//var PIXI = require('pixi');
 
 module.exports = function(stage, emitter, scoreBoard, opts) {
   return new Gnome(stage, emitter,scoreBoard, opts)
@@ -79,10 +79,8 @@ Gnome.prototype.anakGood = function(position) {
         this.danceComplete();
     }
     if (this.scoreBoard.combo > 0 && (this.scoreBoard.combo % 3) == 0) {
-        console.log("PLAY SPECIAL DANCE!");
         this.currentDance = this.dances[1];
     } else {
-        console.log("PLAY DANCE!");
         this.currentDance = this.dances[0];
     }
     this.currentDance.gotoAndPlay(0);
@@ -102,7 +100,6 @@ Gnome.prototype.anakLostCombo = function(position) {
 
 Gnome.prototype.danceComplete = function() {
     if (this.currentDance != null) {
-        console.log("DANCE COMPLETE!")
         this.currentDance.visible = false;
         this.sprite.visible = true;
     }
