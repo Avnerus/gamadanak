@@ -19,6 +19,8 @@ function SweatPants(stage, emitter, scoreBoard, world, opts) {
     this.emitter = emitter;
     this.scoreBoard = scoreBoard;
     this.world = world;
+    this.inPsych = false;
+    this.psychCount = 0;
 
     console.log("Loading sweatpants"); 
     this.sprite = new PIXI.Sprite.fromImage('assets/pixelgnome.png');
@@ -68,8 +70,47 @@ function SweatPants(stage, emitter, scoreBoard, world, opts) {
     this.allPants = [];
     this.bodies = [];
     this.pantsToRemove = [];
+
+
+    // Psych mode
+    this.container = new PIXI.DisplayObjectContainer();
+    this.container.position = {x:this.opts.stageWidth / 2, y: this.opts.stageHeight /2};
+
+	this.bgFront = PIXI.Sprite.fromImage("assets/SceneRotate.jpg");
+    this.bgFront.anchor.x = 0.5;
+    this.bgFront.anchor.y = 0.5;
+    this.bgFront.height = this.opts.stageHeight * 2;
+    this.bgFront.width = this.opts.stageWidth + 300;
+    
+    this.container.addChild(this.bgFront);
+
+	this.light2 = PIXI.Sprite.fromImage("assets/LightRotate2.png");
+    this.light2.anchor.x = 0.5;
+    this.light2.anchor.y = 0.5;
+    this.container.addChild(this.light2);
+
+    this.light1 = PIXI.Sprite.fromImage("assets/LightRotate1.png");
+    this.light1.anchor.x = 0.5;
+    this.light1.anchor.y = 0.5;
+    this.container.addChild(this.light1);
+
+	this.colorMatrix =
+        [1,0,0,0,
+         0,1,0,0,
+         0,0,1,0,
+         0,0,0,1];
+
+
+    this.filter = new PIXI.ColorMatrixFilter();
 }
 
+
+SweatPants.prototype.goPsych = function() {
+    console.log("Psychadelic Mode!!");
+    this.stage.addChildAt(this.container,0);
+    this.stage.filters = [this.filter];
+    this.inPsych = true;
+}
 
 SweatPants.prototype.start = function(numOfPants) {
     for (var i = 0; i < numOfPants; i++) {
@@ -104,6 +145,22 @@ SweatPants.prototype.update = function(position) {
         pants.position.y = position.y * 100;
         pants.rotation = body.GetAngle();
     }
+    if (this.inPsych) {
+        this.bgFront.rotation -= 0.01;
+
+        this.light1.rotation += 0.02;
+        this.light2.rotation += 0.01;
+
+        this.psychCount += 0.01;
+
+        this.colorMatrix[1] = Math.sin(this.psychCount) * 3;
+        this.colorMatrix[2] = Math.cos(this.psychCount);
+        this.colorMatrix[3] = Math.cos(this.psychCount) * 1.5;
+        this.colorMatrix[4] = Math.sin(this.psychCount/3) * 2;
+        this.colorMatrix[5] = Math.sin(this.psychCount/2);
+        this.colorMatrix[6] = Math.sin(this.psychCount/4);
+        this.filter.matrix = this.colorMatrix;
+    }
 }
 SweatPants.prototype.anakGood = function(position) {
     if (this.pantsToRemove.length > 0) {
@@ -115,6 +172,9 @@ SweatPants.prototype.anakGood = function(position) {
     }
     if (this.scoreBoard.combo >= 0 && this.scoreBoard.combo % 10 == 0) {
         this.start(10);
+    }
+    if (this.scoreBoard.combo == 20) {
+        this.goPsych();
     }
 }
 
@@ -129,4 +189,16 @@ SweatPants.prototype.anakLostCombo = function(position) {
     }
     this.allPants.splice(0, this.allPants.length);
     this.bodies.splice(0, this.bodies.length);
+
+    if (this.inPsych) {
+        this.stage.removeChild(this.container);
+        this.stage.psychCount = 0;
+        this.colorMatrix =
+            [1,0,0,0,
+             0,1,0,0,
+             0,0,1,0,
+             0,0,0,1];
+        this.filter.matrix = this.colorMatrix;
+        this.inPsych = false;
+    }
 }

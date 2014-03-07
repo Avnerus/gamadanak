@@ -55,23 +55,23 @@ ScoreBoard.prototype.updateBoard = function(position) {
 }
 
 ScoreBoard.prototype.place = function(position) {
-    this.pointsLabel = new PIXI.Text("Anak Points", {font:"62px JustAnotherHandRegular", fill:"white"});
-    this.pointsLabel.position.y = 180;
+    this.pointsLabel = new PIXI.Text("Anak Points:", {font:"62px JustAnotherHandRegular", fill:"white"});
+    this.pointsLabel.position.y = 100;
     this.pointsLabel.position.x = 90;
     this.pointsValue = new PIXI.Text(this.points, {font:"48px Arial", fill:"white"});
-    this.pointsValue.position.y = 250;
-    this.pointsValue.position.x = 145;
-    //this.stage.addChild(this.pointsLabel);
-    //this.stage.addChild(this.pointsValue);
+    this.pointsValue.position.y = 108;
+    this.pointsValue.position.x = 300;
+    this.stage.addChild(this.pointsLabel);
+    this.stage.addChild(this.pointsValue);
 
-    this.comboLabel = new PIXI.Text("Anak combo", {font:"62px JustAnotherHandRegular", fill:"white"});
-    this.comboLabel.position.y = 180;
-    this.comboLabel.position.x = 650;
+    this.comboLabel = new PIXI.Text("Anak combo:", {font:"62px JustAnotherHandRegular", fill:"white"});
+    this.comboLabel.position.y = 200;
+    this.comboLabel.position.x = 90;
     this.comboValue = new PIXI.Text(this.combo, {font:"48px Arial", fill:"white"});
-    this.comboValue.position.y = 250;
-    this.comboValue.position.x = 718;
-    //this.stage.addChild(this.comboLabel);
-    //this.stage.addChild(this.comboValue);
+    this.comboValue.position.y = 208;
+    this.comboValue.position.x = 300;
+    this.stage.addChild(this.comboLabel);
+    this.stage.addChild(this.comboValue);
 
     // Bounce tweens
 

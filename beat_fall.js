@@ -31,7 +31,7 @@ function BeatFall(stage, emitter, opts) {
     this.tweenQueue = [];
 
 	this.pixelateFilter = new PIXI.PixelateFilter();
-	this.pixelateFilter.size = {x: 8, y: 8};
+	this.pixelateFilter.size = {x: 6, y: 6};
     //this.colorFilter = new PIXI.ColorMatrixFilter();
     //this.colorFilter.matrix = [1,0,0,1,1,1,1,0,0,0,1,0,0,0,0,1];
 
@@ -118,7 +118,7 @@ BeatFall.prototype.spawn = function() {
     haman.anchor.x = 0.5;
     haman.anchor.y = 0.5;
     haman.position = {x: this.startPosition.x, y: this.startPosition.y};
-    haman.filters = [this.pixelateFilter];
+//    haman.filters = [this.pixelateFilter];
 
     this.stage.addChild(haman);
     this.lastHaman = haman;
