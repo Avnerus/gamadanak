@@ -20,12 +20,20 @@ function BeatFall(stage, emitter, opts) {
     // this.emitter = emitter;
     
     this.speed = 400 / 1000; // Pixels per millsecond
+    this.matchRange = 30;
 
     console.log("Loading beat fall"); 
     this.haman_shape = new PIXI.Sprite.fromImage('assets/haman_shape.png');
     var slider = this;
     this.running = false;
     this.lastHaman = null;
+    this.hamanQueue = [];
+    this.tweenQueue = [];
+
+	this.pixelateFilter = new PIXI.PixelateFilter();
+	this.pixelateFilter.size = {x: 8, y: 8};
+    //this.colorFilter = new PIXI.ColorMatrixFilter();
+    //this.colorFilter.matrix = [1,0,0,1,1,1,1,0,0,0,1,0,0,0,0,1];
 
     // Handle spacebar
     window.onkeydown = function(e) { 
@@ -65,20 +73,56 @@ BeatFall.prototype.spacePressed = function() {
     if (!this.running) {
         return;
     }
-    this.emitter.emit('anakGood',{} );
+    var goalHaman = this.hamanQueue[0];
+    if (
+        goalHaman.position.y <= this.haman_shape.position.y + this.matchRange &&
+        goalHaman.position.y >= this.haman_shape.position.y - this.matchRange
+       ) {
+        this.emitter.emit('anakGood',{} );
+        this.reachedHaman = this.hamanQueue.shift();
+        var reachedTween = this.tweenQueue.shift();
+        reachedTween.stop();
+//        this.reachedHaman.filtes = [this.pixelateFilter, this.colorFilter];
+
+        var target = {alpha : 0.0}; 
+        var self = this;
+        var fadeTween = new TWEEN.Tween(this.reachedHaman) 
+            .to(target , 150) 
+            .easing(TWEEN.Easing.Linear.None);
+        fadeTween.onComplete(function() {
+            self.hamanFaded();
+        });
+        fadeTween.start();
+    } else {
+        this.emitter.emit('anakBad',{} );
+    }
+}
+
+BeatFall.prototype.hamanFaded = function() {
+    this.stage.removeChild(this.reachedHaman);
+//    this.emitter.emit('anakBad',{} );
+}
+BeatFall.prototype.hamanReached = function() {
+    this.emitter.emit('anakBad',{} );
+    var reachedHaman = this.hamanQueue.shift();
+    var reachedTween = this.tweenQueue.shift();
+    this.stage.removeChild(reachedHaman);
+
 //    this.emitter.emit('anakBad',{} );
 }
 
 BeatFall.prototype.spawn = function() {
-    console.log("Spawning an haman");
+   // console.log("Spawning an haman");
 
     var haman = new PIXI.Sprite.fromFrame('assets/haman.png');
     haman.anchor.x = 0.5;
     haman.anchor.y = 0.5;
     haman.position = {x: this.startPosition.x, y: this.startPosition.y};
+    haman.filters = [this.pixelateFilter];
 
     this.stage.addChild(haman);
     this.lastHaman = haman;
+    this.hamanQueue.push(haman);
 
     var time = (this.startDistance + 200) / this.speed;
 
@@ -88,10 +132,11 @@ BeatFall.prototype.spawn = function() {
     var fallTween = new TWEEN.Tween(haman.position) 
         .to(target , time) 
         .easing(TWEEN.Easing.Linear.None);
-    fallTween.haman = haman;
     fallTween.onComplete(function() {
-        console.log("Haman reached!", this.haman);
+        console.log("Haman reached!");
+        self.hamanReached();
     });
+    this.tweenQueue.push(fallTween);
 
     fallTween.start();
 }
@@ -105,7 +150,7 @@ BeatFall.prototype.update = function() {
     } else {
         var travelDistance = this.lastHaman.position.y - this.startPosition.y;
         if (travelDistance >= this.hamanDistance) {
-            console.log("Spawning because travel distance is " + travelDistance + " and haman distance should be " + this.hamanDistance);
+//            console.log("Spawning because travel distance is " + travelDistance + " and haman distance should be " + this.hamanDistance);
             this.spawn();
         } 
     }

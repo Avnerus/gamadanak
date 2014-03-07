@@ -21,6 +21,13 @@ var world = new Box2D.Dynamics.b2World(new Box2D.Common.Math.b2Vec2(0, 10),  tru
 var loader = new PIXI.AssetLoader(["assets/sweatpants.png", "assets/haman.png", "assets/dance_seq.json","assets/dance_seq2.json", "assets/angry_seq.json"]);
 loader.onComplete = start;
 loader.load();
+var paused = false;
+emitter.on('gameStop', function(message){
+    paused = true;
+});
+emitter.on('gameStart', function(message){
+    paused = false;
+});
 
 function start() {
     console.log("Starting Gamad Anak!");
@@ -44,7 +51,9 @@ function start() {
         // keyboard handler
         // kd.tick();
         requestAnimationFrame(animate);
-        TWEEN.update();
+        if (!paused) {
+            TWEEN.update();
+        }
         beatFall.update();
         world.Step(1 / 60,  3,  3);
         world.ClearForces();
