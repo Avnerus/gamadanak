@@ -64,7 +64,8 @@ BeatFall.prototype.start = function(bpm) {
     this.running = true;
 }
 BeatFall.prototype.stop = function() {
-    console.log("Slider stopping");
+    console.log("Fall stopping");
+    this.running = false;
     //this.haman.position.x = - (this.sliderBg.width / 2) + (this.haman.width / 2);
     //this.forthTween = null;
 }

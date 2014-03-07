@@ -173,7 +173,7 @@ SweatPants.prototype.anakGood = function(position) {
     if (this.scoreBoard.combo >= 0 && this.scoreBoard.combo % 10 == 0) {
         this.start(10);
     }
-    if (this.scoreBoard.combo == 20) {
+    if (this.scoreBoard.combo == 35) {
         this.goPsych();
     }
 }

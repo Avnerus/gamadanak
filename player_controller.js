@@ -26,6 +26,11 @@ function PlayerController(emitter) {
         }, */
        
         { 
+            file: "10sec.mp3",
+            text: "Silence - 10 Seconds",
+            bpm: 104.914  
+        },
+        { 
             file: "lies.ogg",
             text: "CHVRCHES - Lies",
             bpm: 104.914  
@@ -93,11 +98,15 @@ PlayerController.prototype.onFfwdPressed = function() {
     if (this.currentSongIndex == -1 || this.currentSongIndex >= this.mixtape.length -1 || !this.currentSong) {
         return;
     }
+    this.nextSong();
+}
+PlayerController.prototype.nextSong = function() {
     this.currentSong.sound.stop();
     this.currentSongIndex++;
     this.currentSong = this.mixtape[this.currentSongIndex];
     this.currentSong.sound.play({position: 0});
     $("#song-label").text(this.currentSong.text);
+    this.emitter.emit("songChanged", {});
 }
 PlayerController.prototype.onRewindPressed = function() {
     console.log("Rewind Pressed");
@@ -109,15 +118,21 @@ PlayerController.prototype.onRewindPressed = function() {
     this.currentSong = this.mixtape[this.currentSongIndex];
     this.currentSong.sound.play({position: 0});
     $("#song-label").text(this.currentSong.text);
+    this.emitter.emit("songChanged", {});
 }
 PlayerController.prototype.onPlay = function() {
     console.log("Playing!");
     this.emitter.emit("tapeStart", {});
     this.emitter.emit("gameStart", {bpm: this.currentSong.bpm});
 }
-PlayerController.prototype.onStop = function() {
-    console.log("Stop!");
-    this.emitter.emit("gameStop", {});
+PlayerController.prototype.onFinish = function() {
+    console.log("Song Finished!");
+    if (this.currentSongIndex >= this.mixtape.length -1 || !this.currentSong) {
+        this.emitter.emit("tapeStop", {});
+        this.emitter.emit("gameStop", {});
+    } else {
+        this.nextSong();
+    }
 }
 PlayerController.prototype.onPause = function() {
     console.log("Pause!");
@@ -140,7 +155,7 @@ PlayerController.prototype.onSoundInit = function() {
           url: 'mixtape/' + song.file,
           multiShot: false,
           onplay: function () {ctrl.onPlay()},
-          onfinish: function() {ctrl.onStop() },
+          onfinish: function() {ctrl.onFinish() },
           onpause: function () {ctrl.onPause()},
           onresume: function () {ctrl.onResume()},
           onid3: function() {
