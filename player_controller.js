@@ -24,12 +24,6 @@ function PlayerController(emitter) {
             text: "Kasper Bjorke - Deep is the Breath",
             bpm: 112.0
         }, */
-       
-        { 
-            file: "10sec.mp3",
-            text: "Silence - 10 Seconds",
-            bpm: 104.914  
-        },
         { 
             file: "lies.ogg",
             text: "CHVRCHES - Lies",
