@@ -8,7 +8,7 @@ var emitter = new EventEmitter;
 window.emitter = emitter;
 
 var gameOpts = {
-    stageWidth: 900,
+    stageWidth: 1450,
     stageHeight: 768,
 }
 
@@ -18,7 +18,7 @@ document.body.appendChild(renderer.view);
 
 var world = new Box2D.Dynamics.b2World(new Box2D.Common.Math.b2Vec2(0, 10),  true);
 
-var loader = new PIXI.AssetLoader(["assets/sweatpants.png", "assets/dance_seq.json","assets/dance_seq2.json", "assets/angry_seq.json"]);
+var loader = new PIXI.AssetLoader(["assets/sweatpants.png", "assets/haman.png", "assets/dance_seq.json","assets/dance_seq2.json", "assets/angry_seq.json"]);
 loader.onComplete = start;
 loader.load();
 
@@ -30,8 +30,10 @@ function start() {
     var scoreBoard = require('./scoreboard')(stage, emitter, gameOpts);
     scoreBoard.place();
 
-    var beatSlider = require('./beat_slider')(stage, emitter, gameOpts);
-    beatSlider.place();
+    //var beatSlider = require('./beat_slider')(stage, emitter, gameOpts);
+    //beatSlider.place();
+    var beatFall = require('./beat_fall')(stage, emitter, gameOpts);
+    beatFall.place();
 
     var gnome = require('./gnome')(stage, emitter, scoreBoard, gameOpts);
     gnome.place();
@@ -43,6 +45,7 @@ function start() {
         // kd.tick();
         requestAnimationFrame(animate);
         TWEEN.update();
+        beatFall.update();
         world.Step(1 / 60,  3,  3);
         world.ClearForces();
         sweatpants.update();

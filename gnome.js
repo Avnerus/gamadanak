@@ -20,6 +20,7 @@ function Gnome(stage, emitter, scoreBoard, opts) {
 
     console.log("Loading gnome"); 
     this.sprite = new PIXI.Sprite.fromImage('assets/pixelgnome.png');
+    this.sprite.scale = {x: 0.5, y: 0.5};
     
     var gnome = this;
 
@@ -54,7 +55,8 @@ Gnome.prototype.loadAnim = function(name, frames) {
     dance.anchor.x = 0.5;
     dance.anchor.y = 0.5;
     dance.position.x = this.opts.stageWidth / 2;
-    dance.position.y = this.opts.stageHeight / 2 + 100; 
+    dance.position.y = 330;
+    dance.scale = {x: 0.5, y: 0.5};
     dance.loop = false;
     dance.onComplete = function() {
        gnome.danceComplete();
@@ -70,7 +72,7 @@ Gnome.prototype.place = function(position) {
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 0.5;
     this.sprite.position.x = this.opts.stageWidth / 2;
-    this.sprite.position.y = this.opts.stageHeight / 2 + 100; 
+    this.sprite.position.y = 330;
     this.stage.addChild(this.sprite);
 
 }

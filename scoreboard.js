@@ -61,8 +61,8 @@ ScoreBoard.prototype.place = function(position) {
     this.pointsValue = new PIXI.Text(this.points, {font:"48px Arial", fill:"white"});
     this.pointsValue.position.y = 250;
     this.pointsValue.position.x = 145;
-    this.stage.addChild(this.pointsLabel);
-    this.stage.addChild(this.pointsValue);
+    //this.stage.addChild(this.pointsLabel);
+    //this.stage.addChild(this.pointsValue);
 
     this.comboLabel = new PIXI.Text("Anak combo", {font:"62px JustAnotherHandRegular", fill:"white"});
     this.comboLabel.position.y = 180;
@@ -70,8 +70,8 @@ ScoreBoard.prototype.place = function(position) {
     this.comboValue = new PIXI.Text(this.combo, {font:"48px Arial", fill:"white"});
     this.comboValue.position.y = 250;
     this.comboValue.position.x = 718;
-    this.stage.addChild(this.comboLabel);
-    this.stage.addChild(this.comboValue);
+    //this.stage.addChild(this.comboLabel);
+    //this.stage.addChild(this.comboValue);
 
     // Bounce tweens
 
