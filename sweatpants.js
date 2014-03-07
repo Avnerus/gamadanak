@@ -116,9 +116,7 @@ SweatPants.prototype.start = function(numOfPants) {
     for (var i = 0; i < numOfPants; i++) {
         var pants = new PIXI.Sprite(PIXI.Texture.fromFrame("assets/sweatpants.png")); 
         pants.index = i;
-        var colorFilter = new PIXI.ColorMatrixFilter();
-        colorFilter.matrix = [1,0,0,MathUtil.rndRange(0,1),MathUtil.rndRange(0,1),MathUtil.rndRange(0,1),MathUtil.rndRange(0,1),0,0,0,1,0,0,0,0,1];
-        pants.filters = [colorFilter];
+	pants.tint = Math.floor(Math.random()*16777215);
 
         this.allPants.push(pants);
 
