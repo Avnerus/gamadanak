@@ -52,7 +52,6 @@ function BeatFall(stage, emitter, opts) {
 }
 
 BeatFall.prototype.start = function(bpm) {
-    console.log("Slider tuning to " + bpm + " BPM!");
     this.bpm = bpm;
    // this.haman.position.x = - (this.sliderBg.width / 2) + (this.haman.width / 2);
     this.msPerBeat = 60000 / this.bpm;
@@ -75,6 +74,7 @@ BeatFall.prototype.spacePressed = function() {
         return;
     }
     var goalHaman = this.hamanQueue[0];
+    //console.log("Goal Haman at " + goalHaman.position.y + " And haman shape at " + this.haman_shape.position.y)
     if (
         goalHaman.position.y <= this.haman_shape.position.y + this.matchRange &&
         goalHaman.position.y >= this.haman_shape.position.y - this.matchRange
@@ -87,6 +87,7 @@ BeatFall.prototype.spacePressed = function() {
 
         var target = {alpha : 0.0}; 
         var self = this;
+        this.reachedHaman.tint = 0x00FF00;
         var fadeTween = new TWEEN.Tween(this.reachedHaman) 
             .to(target , 150) 
             .easing(TWEEN.Easing.Linear.None);
@@ -101,15 +102,13 @@ BeatFall.prototype.spacePressed = function() {
 
 BeatFall.prototype.hamanFaded = function() {
     this.stage.removeChild(this.reachedHaman);
-//    this.emitter.emit('anakBad',{} );
 }
 BeatFall.prototype.hamanReached = function() {
+    //console.log("Haman reached!");
     this.emitter.emit('anakBad',{} );
     var reachedHaman = this.hamanQueue.shift();
     var reachedTween = this.tweenQueue.shift();
     this.stage.removeChild(reachedHaman);
-
-//    this.emitter.emit('anakBad',{} );
 }
 
 BeatFall.prototype.spawn = function() {
@@ -125,16 +124,16 @@ BeatFall.prototype.spawn = function() {
     this.lastHaman = haman;
     this.hamanQueue.push(haman);
 
-    var time = (this.startDistance + 200) / this.speed;
+    var time = (this.startDistance + 100) / this.speed;
 
-    var target = {x:this.haman_shape.position.x ,y:this.haman_shape.position.y + 200};
+    var target = {x:this.haman_shape.position.x ,y:this.haman_shape.position.y + 100};
     var self = this;
 
     var fallTween = new TWEEN.Tween(haman.position) 
         .to(target , time) 
         .easing(TWEEN.Easing.Linear.None);
     fallTween.onComplete(function() {
-        console.log("Haman reached!");
+//        console.log("Haman reached!");
         self.hamanReached();
     });
     this.tweenQueue.push(fallTween);

@@ -20,14 +20,14 @@ function PlayerController(emitter) {
     // The MIXTAPE
     this.mixtape = [
         { 
-            file: "1_intro.ogg",
-            text: "The XX - Intro",
-            bpm: 100.378
+            file: "1_sink_the_seine.ogg",
+            text: "Of Montreal - Sink the Seine",
+            bpm: 99.969
         },
         { 
             file: "2_you_for_me.ogg",
             text: "Frankie Rose - You for Me",
-            bpm: 75.461
+            bpm: 151.08
         },
         { 
             file: "3_suzanne.ogg",
@@ -86,7 +86,7 @@ function PlayerController(emitter) {
         },
         { 
             file: "14_arabic.ogg",
-            text: "דפנה והעוגיות - חבר ערבי",
+            text: "Dafna VehaOogiot - Haver Aravi",
             bpm: 84.10
         },
         { 
@@ -196,7 +196,7 @@ function PlayerController(emitter) {
         },
         { 
             file: "36_kah_ota.ogg",
-            text: "דפנה והעוגיות - קח אותה",
+            text: "Dafna VehaOogiot - Kah Ota",
             bpm: 129.91
         },
         { 
@@ -222,7 +222,7 @@ function PlayerController(emitter) {
         { 
             file: "41_son_of_three.ogg",
             text: "The Breeders - Son of Three",
-            bpm: 157.104
+            bpm: 133.36
         },
         { 
             file: "42_eclipse_blue.ogg",
