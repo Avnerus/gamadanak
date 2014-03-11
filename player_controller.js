@@ -19,7 +19,12 @@ function PlayerController(emitter) {
 
     // The MIXTAPE
     this.mixtape = [
-        { 
+       /* { 
+            file: "lies.ogg",
+            text: "CHVRCHES - Lies",
+            bpm: 103.027
+        } */
+       { 
             file: "1_sink_the_seine.ogg",
             text: "Of Montreal - Sink the Seine",
             bpm: 99.969

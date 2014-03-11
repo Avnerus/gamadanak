@@ -1115,6 +1115,11 @@ function PlayerController(emitter) {
     // The MIXTAPE
     this.mixtape = [
         { 
+            file: "lies.ogg",
+            text: "CHVRCHES - Lies",
+            bpm: 103.027
+        }
+     /*   { 
             file: "1_sink_the_seine.ogg",
             text: "Of Montreal - Sink the Seine",
             bpm: 99.969
@@ -1363,7 +1368,7 @@ function PlayerController(emitter) {
             file: "50_ukulele_anthem.ogg",
             text: "Amanda Palmer - Ukulele Anthem",
             bpm: 89.556
-        }
+        }*/
     ];
 
     var ctrl = this;

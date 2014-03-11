@@ -1,8 +1,8 @@
 {
-  "name": "ggj",
+  "name": "gamadanak",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "beefy game.js:bundle.js 8080"
   },
@@ -14,5 +14,14 @@
     "beefy": ">=0.7.1",
     "browserify": ">=3.20.0",
     "tween.js": ">=0.8.0"
-  }
+  },
+  "window": {
+    "title": "Gamad Anak",
+    "toolbar": false,
+    "frame": false,
+    "width": 1450 ,
+    "height": 768,
+    "position": "mouse",
+    "fullscreen" : true
+   }
 }
