@@ -14,6 +14,8 @@ var gameOpts = {
 
 var stage = new PIXI.Stage(0x000000);
 var renderer = new PIXI.autoDetectRenderer(gameOpts.stageWidth, gameOpts.stageHeight);
+renderer.view.style.width = window.innerWidth + "px";
+renderer.view.style.height = window.innerHeight + "px";
 document.body.appendChild(renderer.view);
 
 var world = new Box2D.Dynamics.b2World(new Box2D.Common.Math.b2Vec2(0, 10),  true);
@@ -29,6 +31,15 @@ emitter.on('gameStart', function(message){
     paused = false;
 });
 
+
+window.onresize = function() {
+    console.log("Window resize!");
+    renderer.view.style.width = window.innerWidth + "px";
+    renderer.view.style.height = window.innerHeight + "px";
+    var ratio = {x: window.innerWidth / gameOpts.stageWidth, y: window.innerHeight / gameOpts.stageHeight};
+    emitter.emit('resize', ratio);
+}
+
 function start() {
     console.log("Starting Gamad Anak!");
 
@@ -42,7 +53,8 @@ function start() {
     var beatFall = require('./beat_fall')(stage, emitter, gameOpts);
     beatFall.place();
 
-    var gnome = require('./gnome')(stage, emitter, scoreBoard, gameOpts);
+    var ratio = {x: window.innerWidth / gameOpts.stageWidth, y: window.innerHeight / gameOpts.stageHeight};
+    var gnome = require('./gnome')(stage, emitter, scoreBoard, gameOpts, ratio);
     gnome.place();
 
     var sweatpants = require('./sweatpants')(stage, emitter, scoreBoard, world, gameOpts);
