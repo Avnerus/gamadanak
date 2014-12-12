@@ -86,7 +86,7 @@ ScoreBoard.prototype.place = function(position) {
     this.comboLabel.position.x = 90;
     this.comboValue = new PIXI.Text(this.combo, {font:"48px Arial", fill:"#3399cc"});
     this.comboValue.position.y = 208;
-    this.comboValue.position.x = 300;
+    this.comboValue.position.x = 310;
 
     this.stage.addChild(this.comboLabel);
     this.stage.addChild(this.comboValue);
@@ -101,6 +101,11 @@ ScoreBoard.prototype.place = function(position) {
     this.stage.addChild(this.lastScoreLabel);
     this.stage.addChild(this.lastScoreValue);
 
+    this.instructionsLabel = new PIXI.Text("Instructions: Press the SPACE-BAR at the right moment!", {font:"48px JustAnotherHandRegular", fill:"white"});
+    this.instructionsLabel.position.y = 620;
+    this.instructionsLabel.position.x = 90;
+
+    this.stage.addChild(this.instructionsLabel);
     // Bounce tweens
 
     var forthTarget = {x: 1.5, y: 1.5};

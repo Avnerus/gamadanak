@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict"
 // var PIXI = require('pixi');
 var TWEEN = require('tween.js');
@@ -182,6 +182,8 @@ var gameOpts = {
 
 var stage = new PIXI.Stage(0x000000);
 var renderer = new PIXI.autoDetectRenderer(gameOpts.stageWidth, gameOpts.stageHeight);
+renderer.view.style.width = window.innerWidth + "px";
+renderer.view.style.height = window.innerHeight + "px";
 document.body.appendChild(renderer.view);
 
 var world = new Box2D.Dynamics.b2World(new Box2D.Common.Math.b2Vec2(0, 10),  true);
@@ -197,6 +199,15 @@ emitter.on('gameStart', function(message){
     paused = false;
 });
 
+
+window.onresize = function() {
+    console.log("Window resize!");
+    renderer.view.style.width = window.innerWidth + "px";
+    renderer.view.style.height = window.innerHeight + "px";
+    var ratio = {x: window.innerWidth / gameOpts.stageWidth, y: window.innerHeight / gameOpts.stageHeight};
+    emitter.emit('resize', ratio);
+}
+
 function start() {
     console.log("Starting Gamad Anak!");
 
@@ -210,7 +221,8 @@ function start() {
     var beatFall = require('./beat_fall')(stage, emitter, gameOpts);
     beatFall.place();
 
-    var gnome = require('./gnome')(stage, emitter, scoreBoard, gameOpts);
+    var ratio = {x: window.innerWidth / gameOpts.stageWidth, y: window.innerHeight / gameOpts.stageHeight};
+    var gnome = require('./gnome')(stage, emitter, scoreBoard, gameOpts, ratio);
     gnome.place();
 
     var sweatpants = require('./sweatpants')(stage, emitter, scoreBoard, world, gameOpts);
@@ -236,16 +248,16 @@ function start() {
 "use strict"
 //var PIXI = require('pixi');
 
-module.exports = function(stage, emitter, scoreBoard, opts) {
-  return new Gnome(stage, emitter,scoreBoard, opts)
+module.exports = function(stage, emitter, scoreBoard, opts, ratio) {
+  return new Gnome(stage, emitter,scoreBoard, opts, ratio)
 }
 
 module.exports.Gnome = Gnome
 
 
-function Gnome(stage, emitter, scoreBoard, opts) {
+function Gnome(stage, emitter, scoreBoard, opts, ratio) {
    // protect against people who forget 'new'
-   if (!(this instanceof Gnome)) return new Gnome(stage, emitter, scoreBoard, opts)
+   if (!(this instanceof Gnome)) return new Gnome(stage, emitter, scoreBoard, opts, ratio)
     // we need to store the passed in variables on 'this'
     // so that they are available to the .prototype methods
     this.stage = stage
@@ -275,8 +287,20 @@ function Gnome(stage, emitter, scoreBoard, opts) {
     emitter.on('anakLostCombo', function(message){
         gnome.anakLostCombo();
     });
+    emitter.on('resize', function(message){
+        gnome.resize(message);
+    });
+
+    gnome.resize(ratio);
 }
 
+Gnome.prototype.resize = function(message) {
+    console.log("Gnome resize!", message);
+    this.sprite.position.y = 112 * message.y;
+    for (var i = 0; i < this.dances.length; i++) {
+        this.dances[i].position.y = 112 * message.y;
+    }
+}
 
 Gnome.prototype.loadAnim = function(name, frames) {
     var dance_seq = [];
@@ -290,7 +314,7 @@ Gnome.prototype.loadAnim = function(name, frames) {
     dance.anchor.x = 0.5;
     dance.anchor.y = 0.5;
     dance.position.x = this.opts.stageWidth / 2;
-    dance.position.y = 330;
+    dance.position.y = 120;
     dance.scale = {x: 0.5, y: 0.5};
     dance.loop = false;
     dance.onComplete = function() {
@@ -307,7 +331,7 @@ Gnome.prototype.place = function(position) {
     this.sprite.anchor.x = 0.5;
     this.sprite.anchor.y = 0.5;
     this.sprite.position.x = this.opts.stageWidth / 2;
-    this.sprite.position.y = 330;
+    this.sprite.position.y = 120;
     this.stage.addChild(this.sprite);
 
 }
@@ -1114,15 +1138,21 @@ function PlayerController(emitter) {
 
     // The MIXTAPE
     this.mixtape = [
-        { 
-            file: "lies.ogg",
-            text: "CHVRCHES - Lies",
-            bpm: 103.027
-        },
+        // DEMO
         {
-            file: "zebra.ogg",
-            text: "Beachc House - Zebra",
-            bpm: 118.379
+            file: "16_buy_nothing_day.ogg",
+            text: "The Go! Team - Buy Nothing Day",
+            bpm: 141.254
+        },
+        { 
+            file: "9_burning.ogg",
+            text: "The Whitest Boy Alive - Burning",
+            bpm: 150.81
+        },
+        { 
+            file: "15_amanaemonesia.ogg",
+            text: "Chairlift - Amanaemonesia",
+            bpm: 166.957
         }
      /*  { 
             file: "1_sink_the_seine.ogg",
@@ -1590,7 +1620,7 @@ ScoreBoard.prototype.place = function(position) {
     this.comboLabel.position.x = 90;
     this.comboValue = new PIXI.Text(this.combo, {font:"48px Arial", fill:"#3399cc"});
     this.comboValue.position.y = 208;
-    this.comboValue.position.x = 300;
+    this.comboValue.position.x = 310;
 
     this.stage.addChild(this.comboLabel);
     this.stage.addChild(this.comboValue);
@@ -1605,6 +1635,11 @@ ScoreBoard.prototype.place = function(position) {
     this.stage.addChild(this.lastScoreLabel);
     this.stage.addChild(this.lastScoreValue);
 
+    this.instructionsLabel = new PIXI.Text("Instructions: Press the SPACE-BAR at the right moment!", {font:"48px JustAnotherHandRegular", fill:"white"});
+    this.instructionsLabel.position.y = 620;
+    this.instructionsLabel.position.x = 90;
+
+    this.stage.addChild(this.instructionsLabel);
     // Bounce tweens
 
     var forthTarget = {x: 1.5, y: 1.5};
@@ -1984,7 +2019,10 @@ EventEmitter.prototype.addListener = function(type, listener) {
                     'leak detected. %d listeners added. ' +
                     'Use emitter.setMaxListeners() to increase limit.',
                     this._events[type].length);
-      console.trace();
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
     }
   }
 
@@ -2138,4 +2176,4 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}]},{},[2])
+},{}]},{},[2]);
